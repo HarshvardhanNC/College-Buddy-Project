@@ -11,6 +11,7 @@ import StudentDashboard from './components/student/StudentDashboard';
 import AdminDashboard from './components/admin/AdminDashboard';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import LostFoundPage from './components/features/lost-found/LostFoundPage';
+import EmergencyContactsPage from './components/features/emergency-contacts/EmergencyContactsPage';
 
 // Create a theme instance
 const theme = createTheme({
@@ -70,7 +71,7 @@ function App() {
                   <Route path="lost-found" element={<LostFoundPage />} />
                   <Route path="classes" element={<div>Classes Page (Coming Soon)</div>} />
                   <Route path="cafeteria" element={<div>Cafeteria Page (Coming Soon)</div>} />
-                  <Route path="emergency" element={<div>Emergency Contacts (Coming Soon)</div>} />
+                  <Route path="emergency" element={<EmergencyContactsPage />} />
                 </Routes>
               </ProtectedRoute>
             }

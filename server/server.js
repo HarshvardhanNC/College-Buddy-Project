@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const authRoutes = require('./routes/auth');
 const lostFoundRoutes = require('./routes/lostFoundRoutes');
+const emergencyContactRoutes = require('./routes/emergencyContactRoutes');
 
 const app = express();
 
@@ -19,6 +20,7 @@ mongoose.connect(process.env.MONGODB_URI)
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/lost-found', lostFoundRoutes);
+app.use('/api/emergency-contacts', emergencyContactRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

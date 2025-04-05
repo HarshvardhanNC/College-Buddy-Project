@@ -26,26 +26,38 @@ const LostFoundPage = () => {
     const handleAddItem = async (itemData) => {
         try {
             const token = localStorage.getItem('token');
-            await axios.post('http://localhost:5000/api/lost-found/items', itemData, {
+            if (!token) {
+                console.error('No authentication token found');
+                return;
+            }
+            const response = await axios.post('http://localhost:5000/api/lost-found/items', itemData, {
                 headers: { Authorization: `Bearer ${token}` }
             });
+            console.log('Item added successfully:', response.data);
             fetchItems();
             setShowAddForm(false);
         } catch (error) {
-            console.error('Error adding item:', error);
+            console.error('Error adding item:', error.response?.data || error.message);
+            alert('Failed to add item. Please try again.');
         }
     };
 
     const handleMarkAsClaimed = async (itemId) => {
         try {
             const token = localStorage.getItem('token');
-            console.log('Marking item as claimed:', itemId); // Debug log
-            await axios.post(`http://localhost:5000/api/lost-found/items/${itemId}/mark-claimed`, {}, {
+            if (!token) {
+                console.error('No authentication token found');
+                return;
+            }
+            console.log('Marking item as claimed:', itemId);
+            const response = await axios.post(`http://localhost:5000/api/lost-found/items/${itemId}/mark-claimed`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            fetchItems(); // Refresh the list after marking as claimed
+            console.log('Item marked as claimed successfully:', response.data);
+            fetchItems();
         } catch (error) {
-            console.error('Error marking item as claimed:', error);
+            console.error('Error marking item as claimed:', error.response?.data || error.message);
+            alert('Failed to mark item as claimed. Please try again.');
         }
     };
 
@@ -112,7 +124,8 @@ const LostFoundPage = () => {
                                     Contact: {item.contact}
                                 </p>
                                 {/* Show Mark as Claimed button only to the poster of found items */}
-                                {item.reportedBy === currentUser?.id && 
+                                {item.reportedBy && 
+                                 item.reportedBy.toString() === currentUser?.id && 
                                  item.type === 'found' && 
                                  !item.claimed && (
                                     <button 
